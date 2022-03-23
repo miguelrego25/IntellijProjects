@@ -65,8 +65,9 @@ public class TurmaComposicao {
     public Set<Aluno> AlunosPorOrdem(Comparator<Aluno> c) {
         TreeSet<Aluno> res = new TreeSet<>(c);
         for (Aluno a : this.turma) {
-            res.add().clone();
+            res.add(a.clone());
         }
+        return res;
     }
 
 }
