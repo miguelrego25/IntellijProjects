@@ -19,6 +19,7 @@ public class ColCirculos {
     }
     public ColCirculos(CirculoPonto outro){
 
+
     }
     public List<CirculoPonto> getCircs(){
         List<ColCirculos>res  = new ArrayList<>(this.circs.size());
@@ -49,5 +50,14 @@ public class ColCirculos {
         ColCirculos that = (ColCirculos) o;
         return Objects.equals(circs, that.circs);
     }
+    public ColCirculos clone(){
+        return new ColCirculos (this);
+    }
 
+    @Override
+    public String toString() {
+        return "ColCirculos{" +
+                "circs=" + circs +
+                '}';
+    }
 }
