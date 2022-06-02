@@ -1,4 +1,4 @@
-/*********************************************************************************/
+package Ficha3; /*********************************************************************************/
 /** DISCLAIMER: Este código foi criado e alterado durante as aulas práticas      */
 /** de POO. Representa uma solução em construção, com base na matéria leccionada */ 
 /** até ao momento da sua elaboração, e resulta da discussão e experimentação    */
@@ -126,8 +126,8 @@ public class Ponto {
   
   /**
    * Método que move o Ponto para novas coordenadas.
-   * @param novoX novo valor de x.
-   * @param novoY novo valor de y.
+   * @param cx novo valor de x.
+   * @param cy valor de y.
    */
   public void movePonto(int cx, int cy) {
     this.x = cx;  // ou setX(cx)
