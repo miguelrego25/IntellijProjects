@@ -1,4 +1,4 @@
-package Ficha3; /*********************************************************************************/
+package Ficha3.Ex1; /*********************************************************************************/
 /** DISCLAIMER: Este código foi criado e alterado durante as aulas práticas      */
 /** de POO. Representa uma solução em construção, com base na matéria leccionada */ 
 /** até ao momento da sua elaboração, e resulta da discussão e experimentação    */

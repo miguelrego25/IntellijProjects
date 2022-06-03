@@ -1,4 +1,4 @@
-package Ficha3;
+package Ficha3.Ex1;
 
 public class Circulo {
     private int raio;

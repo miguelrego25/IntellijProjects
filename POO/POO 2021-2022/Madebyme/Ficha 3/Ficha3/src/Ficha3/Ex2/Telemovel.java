@@ -1,4 +1,4 @@
-package Ficha3;
+package Ficha3.Ex2;
 
 import java.util.*;
 
@@ -63,7 +63,7 @@ public class Telemovel {
         this.apps.add(nome);
         this.storageApps = storageApps + tamanho;
     }
-    public void recebeMsg(String msg){
+    public void recebeMsg(String msg, int tamanho){
         this.messages.add(msg);
         this.storageMsg = storageMsg+1;
     }
@@ -81,12 +81,32 @@ public class Telemovel {
         return biggestmessage;
     }
 
-
-
-
-
+    public void removeApp(String nome, int tamanho){
+        Iterator<String> iter = apps.iterator();
+        String str = "";
+        while(iter.hasNext()){
+            str = (String) iter.next();
+            if(str.equals(nome)){
+                iter.remove();
+                storageApps = storageApps - tamanho;
+            }
+        }
+    }
     public boolean existeEspaco(int numeroBytes){
         return numeroBytes <= storageTotal;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Telemovel)) return false;
+        Telemovel telemovel = (Telemovel) o;
+        return getDisplayX() == telemovel.getDisplayX() && getDisplayY() == telemovel.getDisplayY() && getStorageTotal() == telemovel.getStorageTotal() && getStorageApps() == telemovel.getStorageApps() && getStorageMsg() == telemovel.getStorageMsg() && Objects.equals(getBrand(), telemovel.getBrand()) && Objects.equals(getModel(), telemovel.getModel()) && Objects.equals(getMessages(), telemovel.getMessages()) && Objects.equals(getApps(), telemovel.getApps());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getBrand(), getModel(), getDisplayX(), getDisplayY(), getMessages(), getApps(), getStorageTotal(), getStorageApps(), getStorageMsg());
     }
 
     public String getBrand() {
@@ -143,5 +163,20 @@ public class Telemovel {
 
     public void setStorageMsg(int storageMsg) {
         this.storageMsg = storageMsg;
+    }
+
+    @Override
+    public String toString() {
+        return "Telemovel{" +
+                "brand='" + brand + '\'' +
+                ", model='" + model + '\'' +
+                ", displayX=" + displayX +
+                ", displayY=" + displayY +
+                ", messages=" + messages +
+                ", apps=" + apps +
+                ", storageTotal=" + storageTotal +
+                ", storageApps=" + storageApps +
+                ", storageMsg=" + storageMsg +
+                '}';
     }
 }
