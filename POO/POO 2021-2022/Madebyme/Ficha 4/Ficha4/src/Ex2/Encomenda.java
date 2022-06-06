@@ -1,49 +1,56 @@
 package Ex2;
 
 import java.time.LocalDate;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-public class Encomenda extends LinhaEncomenda {
-    private String nome;
+public class Encomenda {
+
+    private String nomeCliente;
     private int nif;
-    private String morada;
-    private String nrEnc;
-    private LocalDate dataEnc;
-    //private LinhaEncomenda[] linhaEnc;
-    private List<LinhaEncomenda> linhaEnc;
+    private String moradaCliente;
+    private int nEnc;
+    private LocalDate dataHora;
+    private List<LinhaEncomenda> linhasEnc;
 
-
-    public Encomenda() {
-        this.nome = " ";
+    // Empty constructor
+    public Encomenda () {
+        this.nomeCliente = "n/a";
         this.nif = 0;
-        this.morada = " ";
-        this.nrEnc = " ";
+        this.moradaCliente = "n/a";
+        this.nEnc = 0;
+        this.dataHora = LocalDate.now();
+        this.linhasEnc = new ArrayList<>();
     }
 
-    public Encomenda(String nome, int nif, String morada, String nrEnc, LocalDate dataEnc, /* LinhaEncomenda[] */ List<LinhaEncomenda> linhaEnc) {
-        this.nome = nome;
+    // Full variable constructor
+    public Encomenda (String nomeCliente, int nif, String moradaCliente,
+                      int nEnc, LocalDate dataHora, ArrayList<LinhaEncomenda> linhasEnc) {
+        this.nomeCliente = nomeCliente;
         this.nif = nif;
-        this.morada = morada;
-        this.nrEnc = nrEnc;
-        this.dataEnc = dataEnc;
-        this.linhaEnc = linhaEnc;
+        this.moradaCliente = moradaCliente;
+        this.nEnc = nEnc;
+        this.dataHora = dataHora;
+        this.linhasEnc = linhasEnc;
     }
 
-    public Encomenda(Encomenda e) {
-        this.nome = e.getNome();
-        this.nif = e.getNif();
-        this.morada = e.getMorada();
-        this.nrEnc = e.getNrEnc();
-        this.linhaEnc = e.getLinhaEnc();
-    }
-    public String getNome() {
-        return nome;
+    // Clone constructor
+    public Encomenda (Encomenda e) {
+        this.nomeCliente = e.nomeCliente;
+        this.nif = e.nif;
+        this.moradaCliente = e.moradaCliente;
+        this.nEnc = e.nEnc;
+        this.dataHora = e.dataHora;
+        setLinhasEnc(e.getLinhasEnc());
     }
 
-    public void setNome(String nome) {
-        this.nome = nome;
+    public String getNomeCliente() {
+        return nomeCliente;
+    }
+
+    public void setNomeCliente(String nomeCliente) {
+        this.nomeCliente = nomeCliente;
     }
 
     public int getNif() {
@@ -54,104 +61,135 @@ public class Encomenda extends LinhaEncomenda {
         this.nif = nif;
     }
 
-    public String getMorada() {
-        return morada;
+    public String getMoradaCliente() {
+        return moradaCliente;
     }
 
-    public void setMorada(String morada) {
-        this.morada = morada;
+    public void setMoradaCliente(String moradaCliente) {
+        this.moradaCliente = moradaCliente;
     }
 
-    public String getNrEnc() {
-        return nrEnc;
+    public int getnEnc() {
+        return nEnc;
     }
 
-    public void setNrEnc(String nrEnc) {
-        this.nrEnc = nrEnc;
+    public void setnEnc(int nEnc) {
+        this.nEnc = nEnc;
     }
 
-    public LocalDate getDataEnc() {
-        return dataEnc;
+    public LocalDate getDataHora() {
+        return dataHora;
     }
 
-    public void setDataEnc(LocalDate dataEnc) {
-        this.dataEnc = dataEnc;
+    public void setDataHora(LocalDate dataHora) {
+        this.dataHora = dataHora;
     }
 
-    public /* LinhaEncomenda[] */ List<LinhaEncomenda> getLinhaEnc() { // VERIFICAR
-        return linhaEnc;
+    public ArrayList<LinhaEncomenda> getLinhasEnc() {
+        ArrayList<LinhaEncomenda> cp = new ArrayList<>();
+        for (LinhaEncomenda linha : this.linhasEnc) {
+            cp.add(linha.clone());
+        }
+        return cp;
     }
 
-    public void setLinhaEnc(/* LinhaEncomenda[] */ List<LinhaEncomenda> linhaEnc) { // VERIFICAR
-        this.linhaEnc = linhaEnc;
+    public void setLinhasEnc(ArrayList<LinhaEncomenda> le) {
+        this.linhasEnc = new ArrayList<>();
+        for (LinhaEncomenda l : le) {
+            this.linhasEnc.add(l.clone());
+        }
+    }
+
+    // b) ------------------------------------------------------------------
+    // ii)
+    public double calculaValorTotal(){
+        double total = 0;
+        for(LinhaEncomenda coisa: this.linhasEnc){
+            total += coisa.calculaValorLinhaEnc();
+        }
+        return total;
+    }
+    public double calculaValorTotal2(){
+        return this.linhasEnc.stream().mapToDouble(LinhaEncomenda::calculaValorLinhaEnc).sum();
+    }
+    //iii)
+    public double calculaValorDesconto1(){
+        double totaldesconto = 0;
+        for(LinhaEncomenda linhaEncomenda: this.linhasEnc){
+            totaldesconto += linhaEncomenda.calculaValorDesconto();
+        }
+        return totaldesconto;
+    }
+    public double calculaValorDesconto2(){
+        return this.linhasEnc.stream().mapToDouble(LinhaEncomenda :: calculaValorDesconto).sum();
+    }
+    //iv)
+
+    public int numeroTotalProdutos1() {
+        int qt=0;
+
+        for (LinhaEncomenda linhaEnc : this.linhasEnc) {
+            qt += linhaEnc.getQuantidade();
+        }
+
+        return qt;
+    }
+    public int numeroTotalProdutos2(){
+        return this.linhasEnc.stream().mapToInt(LinhaEncomenda ::getQuantidade).sum();
+    }
+    //v)
+    public boolean existeProdutoEncomenda1(String refProduto){
+        return this.linhasEnc.stream().anyMatch(le->le.getReferencia().equals(refProduto));
+    }
+
+    //vi)
+    public void adicionaLinha(LinhaEncomenda linha){
+        this.linhasEnc.add(linha.clone());
+    }
+    //vii)
+    public void removeProduto(String codProd){
+        this.linhasEnc.removeIf(le->le.getReferencia().equals(codProd));
+    }
+
+
+
+
+
+
+
+
+    //----------------------------------------------------------------------
+    public Encomenda clone() {
+        return new Encomenda(this);
+    }
+
+    @Override
+    public String toString() {
+        return "Encomenda{" +
+                "nomeCliente='" + nomeCliente + '\'' +
+                ", nif=" + nif +
+                ", moradaCliente='" + moradaCliente + '\'' +
+                ", nEnc=" + nEnc +
+                ", dataHora=" + dataHora +
+                ", linhasEnc=" + linhasEnc +
+                '}';
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        if (!super.equals(o)) return false;
         Encomenda encomenda = (Encomenda) o;
-        return nif == encomenda.nif && Objects.equals(nome, encomenda.nome) && Objects.equals(morada, encomenda.morada) && Objects.equals(nrEnc, encomenda.nrEnc) && Objects.equals(dataEnc, encomenda.dataEnc) /* && Arrays.equals(linhaEnc, encomenda.linhaEnc) */;
+        return getNif() == encomenda.getNif() &&
+                getnEnc() == encomenda.getnEnc() &&
+                Objects.equals(getNomeCliente(), encomenda.getNomeCliente()) &&
+                Objects.equals(getMoradaCliente(), encomenda.getMoradaCliente()) &&
+                Objects.equals(getDataHora(), encomenda.getDataHora()) &&
+                Objects.equals(getLinhasEnc(), encomenda.getLinhasEnc());
     }
 
-
-    // b)
-    public double calculaValorTotal() {
-        double soma = 0;
-        for(LinhaEncomenda linhas : linhaEnc) {
-            soma += linhas.calculaValorLinhaEnc();
-        }
-        return soma;
-    }
-
-    // c)
-    public double calculaValorDesconto() {
-        double soma = 0;
-        for(LinhaEncomenda linhas : linhaEnc) {
-            soma += linhas.calculaValorDesconto();
-        }
-        return soma;
-    }
-
-    // d)
-    public int numeroTotalProdutos() {
-        int total = 0;
-        for(LinhaEncomenda linhas : linhaEnc) {
-            total += linhas.getQuantidade();
-        }
-        return total;
-    }
-
-    // e)
-    public boolean existeProdutorEncomenda(String refProduto) { // VERIFICAR
-        for(LinhaEncomenda linhas : linhaEnc) {
-            if(Objects.equals(refProduto, linhas.getCodigo())) return true;
-        }
-        return false;
-    }
-
-    // f)
-    public void adicionaLinha(LinhaEncomenda linha) {
-        LinhaEncomenda[] ar = this.getLinhaEnc().toArray(new LinhaEncomenda[0]);
-        LinhaEncomenda[] novo = new LinhaEncomenda[ar.length+1];
-        System.arraycopy(ar,0,novo,0,ar.length);
-        novo[ar.length] = new LinhaEncomenda(linha);
-        this.setLinhaEnc(List.of(novo));
-    }
-
-    // g)
-    public void removeProduto(String codProd){
-        LinhaEncomenda[] ar = this.getLinhaEnc().toArray(new LinhaEncomenda[0]);
-        LinhaEncomenda[] novo = new LinhaEncomenda[ar.length-1];
-        int j=0;
-        for(int i = 0; i < ar.length; i++){
-            if(!ar[i].getCodigo().equals(codProd)){
-                novo[j] = ar[i];
-                j++;
-            }
-        }
-        System.arraycopy(novo, 0, ar, 0, novo.length);
+    @Override
+    public int hashCode() {
+        return Objects.hash(getNomeCliente(), getNif(), getMoradaCliente(), getnEnc(), getDataHora(), getLinhasEnc());
     }
 }
-
